@@ -9,6 +9,8 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_handshake(int *to_client) {
+  mkfifo("./well known", 0644);
+  
   return 0;
 }
 
@@ -21,5 +23,7 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
+    mkfifo("./private", 0644);
+    
   return 0;
 }
