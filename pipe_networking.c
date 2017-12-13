@@ -9,7 +9,10 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_handshake(int *to_client) {
-  mkfifo("./well known", 0644);
+  const char * well_known = "./well_known";
+  mkfifo(well_known, 0644);
+  fd = open(well_known, O_WRONLY);
+  write(fd, well_known, strlen(well_known) + 1)
   char priv[256];
   char final[256]; 
   read("./well known",priv, sizeof(priv));
@@ -31,7 +34,7 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
-  char priv[]= "./private";
+  const char * priv = "./private";
   char from_server[256];
   char message[] = "succees";
   mkfifo(priv, 0644);
