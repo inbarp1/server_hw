@@ -10,12 +10,13 @@
   =========================*/
 int server_handshake(int *to_client) {
   mkfifo("./well known", 0644);
-  char[256]priv;
-  char[256]final; 
+  char priv[256];
+  char final[256]; 
   read("./well known",priv, sizeof(priv));
   write(priv, priv, sizeof(priv));
   read("./well known", final,sizeof(final));
   if(strcmp(final, "success")==0){
+    printf("Succeeded\n");
     close(0);
   }
   return 0;
