@@ -9,18 +9,29 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_handshake(int *to_client) {
+  /* setup*/
+  int fd;
   const char * well_known = "./well_known";
-  mkfifo(well_known, 0644);
-  fd = open(well_known, O_WRONLY);
-  write(fd, well_known, strlen(well_known) + 1)
+  fd = mkfifo(well_known, 0644);
+  /*fd = open(well_known, O_WRONLY);
+    write(fd, well_known, strlen(well_known) + 1);*/
   char priv[256];
-  char final[256]; 
-  read("./well known",priv, sizeof(priv));
-  write(priv, priv, sizeof(priv));
-  read("./well known", final,sizeof(final));
+  char final[256];
+
+  /* handshake */
+  read(fd,priv, sizeof(priv));
+  close(fd);
+  const char *operation = "./operation";
+  int fd_op = mkfifo(operation,0644);
+  write(priv, operation, strlen(operation)+1);
+
+  /* operation */
+
+  
+  read(fd_op, final,sizeof(final));
   if(strcmp(final, "success")==0){
     printf("Succeeded\n");
-    close(0);
+    close(fd2);
   }
   return 0;
 }
