@@ -23,7 +23,8 @@ int server_handshake(int *to_client) {
   close(fd);
   const char *operation = "./operation";
   int fd_op = mkfifo(operation,0644);
-  write(priv, operation, strlen(operation)+1);
+  int fd_priv= open(priv, O_WRONLY);
+  write(fd_priv, operation, strlen(operation)+1);
 
   /* operation */
 
@@ -31,7 +32,7 @@ int server_handshake(int *to_client) {
   read(fd_op, final,sizeof(final));
   if(strcmp(final, "success")==0){
     printf("Succeeded\n");
-    close(fd2);
+    close(fd_op);
   }
   return 0;
 }
@@ -46,15 +47,16 @@ int server_handshake(int *to_client) {
   =========================*/
 int client_handshake(int *to_server) {
   const char * priv = "./private";
+  int fd;
+  const char * well_known = "./well_known";
   char from_server[256];
   char message[] = "succees";
-  mkfifo(priv, 0644);
-  write("./well known", priv, sizeof(priv));
-  read(priv,from_server,sizeof(from_server));
-  if(strcmp(priv,from_server)== 0){
-    write("./well known", message, sizeof(message));
-    close(0);
-  }
-  
+  fd = mkfifo(priv, 0644);
+  int fd_well = open(well_known, O_WRONLY);
+  write(fd_well, priv, sizeof(priv));
+  read(fd,from_server,sizeof(from_server));
+  close(fd);
+  int fd_op = open(from_server, O_WRONLY);
+  write(fd_op, message, sizeof(message));
   return 0;
 }
