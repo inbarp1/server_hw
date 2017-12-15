@@ -11,9 +11,10 @@
 int server_handshake(int *to_client) {
   /* setup*/
   int fd;
+  int from_client;
   const char * well_known = "./well_known";
   fd = mkfifo(well_known, 0644);
-  /*fd = open(well_known, O_WRONLY);
+  /*fd = open(well_known, O_RDONLY, 0);
     write(fd, well_known, strlen(well_known) + 1);*/
   char priv[256];
   char final[256];

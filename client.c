@@ -3,8 +3,13 @@
 
 int main() {
 
-  int to_client;
-  int from_client;
+  int to_server;
+  int from_server;
+  char buffer[256];
 
-  from_client = server_handshake( &to_client );
+  from_server = client_handshake( &to_server );
+  while(1){
+    fget(buffer, sizeof(buffer). stdin);
+    write(to_server, buffer, sizeof(buffer));
+    read(from_server, buffer, sizeof(buffer));
 }
