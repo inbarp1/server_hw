@@ -18,7 +18,8 @@ int main() {
   while(1){
     from_client = server_handshake( &to_client );
     while(read(from_client, buffer, sizeof(buffer))){
-      printf("Message recieved: %s", buffer);
+      printf("Message received: %s", buffer);
+      process(buffer);
       write(to_client, buffer, sizeof(buffer));
     }
   }

@@ -12,17 +12,17 @@ int server_handshake(int *to_client) {
   /* setup*/
 
   int from_client;
-  const char * well_known = "well_known";
-  mkfifo(well_known, 0644);
-  from_client = open(well_known, O_RDONLY);
-  /*fd = open(well_known, O_RDONLY, 0);
-    write(fd, well_known, strlen(well_known) + 1);*/
+  //const char * "well_known" = ""well_known"";
+  mkfifo("well_known", 0644);
+  from_client = open("well_known", O_RDONLY);
+  /*fd = open("well_known", O_RDONLY, 0);
+    write(fd, "well_known", strlen("well_known") + 1);*/
   char priv[256];
   char final[256];
 
   /* handshake */
   read(from_client, priv, sizeof(priv));
-  remove(well_known);
+  remove("well_known");
 
   int operation = open(priv, O_WRONLY);
   write(operation, "Message recieved", 17);
@@ -37,10 +37,6 @@ int server_handshake(int *to_client) {
   int fd_op = mkfifo(operation,0644);
   int fd_priv = open(priv, O_WRONLY);
   write(fd_priv, operation, strlen(operation)+1);
-
-  /* operation
-
-
   read(fd_op, final,sizeof(final));
   if(strcmp(final, "success")==0){
     printf("Succeeded\n");
@@ -59,23 +55,23 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
-  const char * privfifo = "private";
-  const char * well_known = "well_known";
-  mkfifo(privfifo, 0644);
-  int from_server = open(well_known, O_WRONLY);
+  //const char * "private" = "private";
+  //const char * "well_known" = ""well_known"";
+  mkfifo("private", 0644);
+  int from_server = open("well_known", O_WRONLY);
   write(from_server, "private", 8);
-  int server_response = open(privfifo, O_RDONLY);
+  int server_response = open("private", O_RDONLY);
   char s[256];
   //char message[] = "succees";
   read(server_response, s, sizeof(s));
-  remove(privfifo);
+  remove("private");
   printf("Input: %s\n", s);
   write(from_server, "response found", 15);
   *to_server = from_server;
   return server_response;
 
   //fd = mkfifo(priv, 0644);
-  //int fd_well = open(well_known, O_WRONLY);
+  //int fd_well = open("well_known", O_WRONLY);
   // write(fd_well, priv, sizeof(priv));
   // read(fd,from_server,sizeof(from_server));
   // close(fd);
