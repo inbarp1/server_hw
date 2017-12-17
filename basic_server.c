@@ -3,9 +3,16 @@
 
 void process(char * s){
   //Simple process that makes all the string uppercase
+  // int x = 0;
+  // while(x<strlen(s)){
+  //   s[x++] -= 32;
+  //}
   int x = 0;
   while(x<strlen(s)){
-    s[x++] -= 32;
+    if(s[x] == 32){
+      s[x] = '_';
+    }
+    x++;
   }
 
 }
@@ -20,6 +27,7 @@ int main() {
     while(read(from_client, buffer, sizeof(buffer))){
       printf("Message received: %s", buffer);
       process(buffer);
+      printf("%s\n", buffer);
       write(to_client, buffer, sizeof(buffer));
     }
   }
